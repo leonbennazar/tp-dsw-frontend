@@ -1,34 +1,70 @@
 <script>
   import { page } from '$app/stores';
+  import {goto} from '$app/navigation';
+  
 </script>
-
-<nav>
-  <a href="/" class:selected={$page.url.pathname === '/'}>Inicio</a>
-  <a href="/page2" class:selected={$page.url.pathname === '/page2'}>Page 2</a>
-</nav>
+<div class = "container">
+  
+  <div class = "logo">
+    <button on:click={() => goto('/')}><img src="/logo.png" alt="Logo"></button>
+  </div>
+  <nav>
+    <a href="/" class:selected={$page.url.pathname === '/'}>Inicio</a>
+    <a href="/canchas" class:selected={$page.url.pathname === '/canchas'}>Canchas</a>
+    <a href="/page3" class:selected={$page.url.pathname === '/page3'}>Page 3</a>
+    <button><img class="userimg" src="/user.png" alt="user by stasy"></button>
+  </nav>
+</div>
 
 <style>
   nav {
-    display: flex;
-    margin-top: 150px;
-    background-color: blueviolet;
+    justify-content: right;
   }
 
   a {
     text-decoration: none;
-    color: #333;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
+    color: #ffffff;
+    padding: 15px;
     transition: 0.2s;
+    
   }
 
   a:hover {
-    background: #eee;
+    color: #5f69f5;
   }
 
   a.selected {
-    background: #0070f3;
-    color: white;
+    color: #1c1b50;
     font-weight: bold;
   }
+
+  .container{
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color:#2c2d83;
+  height: 60px;
+  width: 100%;
+  top: 0;
+  left: 0;
+  
+  button{
+    background: none;
+    border: none;
+  }
+
+  img{
+    padding: 15px;
+    height: 50px;
+    width: 50px;
+  }
+  img:hover{
+    cursor: pointer;
+  }
+  nav{
+    display: flex; 
+    align-items: center; 
+  }
+}
 </style>

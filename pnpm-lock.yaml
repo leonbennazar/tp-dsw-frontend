@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      tailwindcss:
-        specifier: ^4.1.14
-        version: 4.1.14
     devDependencies:
       '@eslint/compat':
         specifier: ^1.4.0

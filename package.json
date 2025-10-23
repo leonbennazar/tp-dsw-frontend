@@ -38,8 +38,5 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
-	},
-	"dependencies": {
-		"tailwindcss": "^4.1.14"
 	}
 }
