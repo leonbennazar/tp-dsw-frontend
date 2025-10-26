@@ -9,7 +9,7 @@
 </script>
 
 {#await promise}
-  <p>Cargando cancha...</p>
+  <h1>Cargando cancha...</h1>
 {:then cancha}
 <h1>{cancha.name}</h1>
 {:catch err}
