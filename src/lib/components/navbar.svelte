@@ -34,7 +34,7 @@
   }
 
   a.selected {
-    color: #1c1b50;
+    color: #5f69f5;
     font-weight: bold;
   }
 

@@ -52,6 +52,7 @@
 
   button:hover {
     color: #5f69f5;
+		cursor: pointer;
   }
 
 	.slider{

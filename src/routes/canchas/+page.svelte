@@ -91,6 +91,7 @@
 
 h1{
   size:300px;
+  color:white;
 }
 
 
