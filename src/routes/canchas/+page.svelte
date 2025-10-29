@@ -6,9 +6,9 @@
   let arrayCanchas: any[] = [];  //en typescript: data va a ser un array de cualquier tipo
 
   async function getCanchas() {
-    const req = await fetch('https://api.attackontitanapi.com/titans/');
+    const req = await fetch('http://localhost:3000/api/characters/', {method: "GET"});
     const res = await req.json();
-    arrayCanchas = res.results;  //uso esto porque la request devuelve objetos
+    arrayCanchas = res.data;  //uso esto porque el contenido del array está en data
     console.log(arrayCanchas); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
