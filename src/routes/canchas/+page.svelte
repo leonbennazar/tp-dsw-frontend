@@ -12,9 +12,6 @@
     console.log(arrayCanchas); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
-  onMount(() => {
-    getCanchas();
-  });
 </script>
 
 <Navbar></Navbar>
@@ -22,6 +19,12 @@
 
 
 <div class ="content">
+
+  <div class ="addbtn">
+    <button on:click ={(()=> goto('/canchas/add'))}>+</button>
+
+  </div>
+
       {#await getCanchas()}
         <h1>Cargando canchas...</h1>
 
@@ -39,7 +42,7 @@
             {/each}
           </div>
       {:catch err}
-      <p style="color:red">No se encontro la cancha</p>
+      <p style="color:red">Ocurrió un error con la base de datos</p>
       {/await}
 
 </div>
