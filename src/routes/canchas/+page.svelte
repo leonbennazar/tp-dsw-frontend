@@ -8,7 +8,7 @@
   async function getCanchas() {
     const req = await fetch('http://localhost:3000/api/characters/', {method: "GET"});
     const res = await req.json();
-    arrayCanchas = res.data;  //uso esto porque el contenido del array está en data
+    arrayCanchas = res.data;  //uso esto porque el array que trae el contenido se llama data
     console.log(arrayCanchas); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
