@@ -31,14 +31,14 @@ async function borrarCancha() {
 <NavBar />
 
 <div class= "content">
-
+  <button class="backbtn"on:click={() => history.back()}>Volver</button>
   {#await getCancha()}
     <h1>Cargando cancha...</h1>
   {:then cancha}
-  <button on:click={() => history.back()}>Volver</button>
-  <button on:click ={() => borrarCancha()}>Delete</button>
-    <h1>{canchaRecibida.name}</h1>
-      <h2>{canchaRecibida.characterClass}<br>{canchaRecibida.items}</h2>
+  <button class ="editbtn"on:click ={() => goto(`/canchas/edit/${id}`)}>Editar</button>
+  <button class ="delbtn"on:click ={() => borrarCancha()}>BORRAR</button>
+    <h1>{canchaRecibida.nombre}</h1>
+      <h2>{canchaRecibida.tipo_turno}<br>{canchaRecibida.items}</h2>
   {:catch err}
     <p style="color:red">Hubo un problema con la base de datos</p>
   {/await}
@@ -53,5 +53,16 @@ async function borrarCancha() {
 
   h1, h2{
     color:white;
+  }
+  button{
+    height:30px;
+  }
+  button:hover{
+    cursor: pointer;
+  }
+
+  .delbtn{
+    background-color: rgb(126, 30, 46);
+    color: white;
   }
 </style>

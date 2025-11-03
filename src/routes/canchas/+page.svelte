@@ -33,9 +33,9 @@
             {#each arrayCanchas as cancha}
             <button class="accioncancha" on:click={() => goto(`/canchas/${cancha.id}`)}>
               <div class ="cancha-card">
-                <img src= '/logo.png' alt={cancha.name}/>
+                <img src= '/logo.png' alt={cancha.nombre}/>
                   <div class= "descripcion">
-                  <p>{cancha.name}</p>
+                  <p>{cancha.nombre}</p>
                 </div>
               </div>
             </button>
