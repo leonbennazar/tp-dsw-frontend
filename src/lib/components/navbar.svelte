@@ -11,7 +11,8 @@
   <nav>
     <a href="/" class:selected={$page.url.pathname === '/'}>Inicio</a>
     <a href="/canchas" class:selected={$page.url.pathname === '/canchas'}>Canchas</a>
-    <a href="/page3" class:selected={$page.url.pathname === '/page3'}>Page 3</a>
+    <a href="/tamanios" class:selected={$page.url.pathname === '/tamanios'}>Tamaños</a>
+    <a href="/materiales" class:selected={$page.url.pathname === '/materiales'}>Materiales</a>
     <button><img class="userimg" src="/user.png" alt="user by stasy"></button>
   </nav>
 </div>
@@ -48,6 +49,7 @@
   width: 100%;
   top: 0;
   left: 0;
+  }
   
   button{
     background: none;
@@ -66,5 +68,5 @@
     display: flex; 
     align-items: center; 
   }
-}
+
 </style>

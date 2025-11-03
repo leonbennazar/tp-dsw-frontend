@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
 import NavBar from '$lib/components/navbar.svelte'
-import {goto} from '$app/navigation'
+import {goto} from '$app/navigation';
+	import { onMount } from 'svelte';
+let arrayTamanios: any[] = [];
   // @ts-ignore
   async function Enviar(event) {
     event.preventDefault(); // evita el reload del form
@@ -15,7 +17,7 @@ import {goto} from '$app/navigation'
     const jsonData = JSON.stringify(data);
 
     // Enviar al backend
-    const res = await fetch("http://localhost:3000/api/characters", {
+    const res = await fetch("http://localhost:3000/api/tamanios", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,31 +27,42 @@ import {goto} from '$app/navigation'
     goto('/canchas')
   }
 
+  async function getTamanios() {
+    const req = await fetch('http://localhost:3000/api/tamanios/', {method: "GET"});
+    const res = await req.json();
+    arrayTamanios = res;  //Si el array que devuelve los resultados tiene un nombre, se lo agrego como res.nombre
+    console.log(arrayTamanios); //si la consola devuelve entre {}, es objeto, entre [] es array
+  }
+
+  onMount(getTamanios)
 
 </script>
 
 <NavBar />
 
 <div class="content">
-<button on:click={() => history.back()}>⬅️ Volver</button>
-
+<button on:click={() => history.back()}>Volver</button>
+<h1>Agregar cancha</h1>
   <form on:submit={Enviar} class="editForm">
-    <input type="text" name="nombre" required placeholder="Nombre de la cancha"/>
-    <br>
-    <label>Tipo de turno
-    <br>
+    <input type="text" name="nombre" required placeholder="Nombre"/>
+    <label>Tipo de turno:
       <label>
         <input type="radio" name="tipo_turno" value="y_media" required />
         Y media
       </label>
-      <br>
       <label>
         <input type="radio" name="tipo_turno" value="en_punto" required />
         En punto
-      </label>
+    <label>Tamaño<br>
+    {#each arrayTamanios as tamanio }
+    <label>
+      <input type="radio" name="tamanio" value={tamanio.capacidad_x_equipo} required />
+    {tamanio.capacidad_x_equipo}</label><br>
+    {/each}
+    </label>
+    </label>
       <button type="submit">Enviar</button>
     </label>
-
   </form>
 </div>
 
@@ -78,4 +91,9 @@ import {goto} from '$app/navigation'
     border-radius: 6px;
   }
 
+  h1{
+    display: flex;
+    justify-content:center;
+    color: white
+  }
 </style>

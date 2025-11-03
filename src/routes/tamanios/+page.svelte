@@ -3,13 +3,13 @@
   import {goto} from '$app/navigation';
 	import Navbar from '$lib/components/navbar.svelte';
   let mostrar: any= '';
-  let arrayCanchas: any[] = [];  //en typescript: data va a ser un array de cualquier tipo
+  let arrayTamanios: any[] = [];  //en typescript: data va a ser un array de cualquier tipo
 
-  async function getCanchas() {
-    const req = await fetch('http://localhost:3000/api/canchas/', {method: "GET"});
+  async function getTamanios() {
+    const req = await fetch('http://localhost:3000/api/tamanios/', {method: "GET"});
     const res = await req.json();
-    arrayCanchas = res;  //uso esto porque el array que trae el contenido se llama data
-    console.log(arrayCanchas); //si la consola devuelve entre {}, es objeto, entre [] es array
+    arrayTamanios = res;  //uso esto porque el array que trae el contenido se llama data
+    console.log(arrayTamanios); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
 </script>
@@ -20,19 +20,20 @@
 
 <div class ="content">
 
-  <div class ="addbtn">
-    <button on:click ={(()=> goto('/canchas/add'))}>+</button>
+  <div class ="agregarbtn">
+    <button on:click ={(()=> goto('/tamanios/add'))}>+</button>
+
   </div>
 
-      {#await getCanchas()}
+      {#await getTamanios()}
         <h1>Cargando tamaños...</h1>
 
         {:then tamanio}
           <div class="tamanios">
-            {#each arrayCanchas as cancha}
-            <button class="accioncancha" on:click={() => goto(`/canchas/${cancha.id}`)}>
-              <div class ="cancha-card">
-                  <h1>Cancha {cancha.id}</h1>
+            {#each arrayTamanios as tamanio}
+            <button class="acciontamanio" on:click={() => goto(`/tamanios/${tamanio.id}`)}>
+              <div class ="tamanio-card">
+                  <h1>F{tamanio.capacidad_x_equipo}</h1>
               </div>
             </button>
             {/each}
@@ -51,15 +52,7 @@
   margin-top: 70px;
 }
 
-.addbtn button{
-  background-color: #00B894;
-  border:none;
-  color: white;
-  border-radius: 5px;
-  height: 35px;
-  width:35px;
-  cursor:pointer;
-}
+
 .tamanios{
   display:flex;
   flex-direction: column;
@@ -98,14 +91,14 @@
 }
 @media (min-width: 1024px){
   .tamanios button{
-    font-size: 20px;
+    font-size: 30px;
     width: 290px;
     height: 200px;
   }
 }
 
 
- .accioncancha:hover{
+ .acciontamanio:hover{
   transform: translateY(-8px);
   cursor:pointer;
   transition: 0.3s;

@@ -7,9 +7,9 @@
 
 
   async function getCancha() {
-    const req = await fetch(`http://localhost:3000/api/characters//${id}`, {method: "GET"});
+    const req = await fetch(`http://localhost:3000/api/canchas//${id}`, {method: "GET"});
     const res = await req.json();
-    canchaRecibida = res.data
+    canchaRecibida = res
     console.log(canchaRecibida)
   }
 
@@ -18,7 +18,7 @@ async function borrarCancha() {
     if (!confirm('¿Estás seguro de que quieres borrar esta cancha?')) {
       return; 
     }
-      const respuesta = await fetch(`http://localhost:3000/api/characters/${id}`, {method: 'DELETE'});
+      const respuesta = await fetch(`http://localhost:3000/api/canchas/${id}`, {method: 'DELETE'});
       goto('/canchas')
     if (!respuesta.ok) {
         throw new Error('No se pudo borrar la cancha');
