@@ -7,7 +7,7 @@
 
 
   async function getCancha() {
-    const req = await fetch(`http://localhost:3000/api/canchas//${id}`, {method: "GET"});
+    const req = await fetch(`http://localhost:3000/api/canchas/${id}`, {method: "GET"});
     const res = await req.json();
     canchaRecibida = res
     console.log(canchaRecibida)

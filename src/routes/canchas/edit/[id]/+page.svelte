@@ -37,7 +37,8 @@ let arrayTamanios: any[] =[];
   async function getTamanios() {
     const req = await fetch('http://localhost:3000/api/tamanios', {method: "GET"});
     const res = await req.json();
-    arrayTamanios = res;  //uso esto porque el array que trae el contenido se llama data
+    arrayTamanios = res.data;  //uso esto porque el array que trae el contenido se llama data
+    arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo)
     console.log(arrayTamanios); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
@@ -53,6 +54,7 @@ let arrayTamanios: any[] =[];
 <h1>Editar "{canchaRecibida.nombre}"</h1>
   <form on:submit={Enviar} class="editForm">
     <input type="text" name="nombre" required placeholder="Nombre"/>
+    <input type="number" name="numero" required placeholder="Numero de cancha" min="1"/>
     <label>Tipo de turno:
       <label>
         <input type="radio" name="tipo_turno" value="y_media" required />

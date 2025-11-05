@@ -17,7 +17,7 @@ let arrayTamanios: any[] = [];
     const jsonData = JSON.stringify(data);
 
     // Enviar al backend
-    const res = await fetch("http://localhost:3000/api/tamanios", {
+    const res = await fetch("http://localhost:3000/api/canchas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,7 +30,8 @@ let arrayTamanios: any[] = [];
   async function getTamanios() {
     const req = await fetch('http://localhost:3000/api/tamanios/', {method: "GET"});
     const res = await req.json();
-    arrayTamanios = res;  //Si el array que devuelve los resultados tiene un nombre, se lo agrego como res.nombre
+    arrayTamanios = res.data;  //Si el array que devuelve los resultados tiene un nombre, se lo agrego como res.nombre
+    arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo)
     console.log(arrayTamanios); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
@@ -45,6 +46,7 @@ let arrayTamanios: any[] = [];
 <h1>Agregar cancha</h1>
   <form on:submit={Enviar} class="editForm">
     <input type="text" name="nombre" required placeholder="Nombre"/>
+    <input type="number" name="numero" required placeholder="Numero de cancha" min="1"/>
     <label>Tipo de turno:
       <label>
         <input type="radio" name="tipo_turno" value="y_media" required />
@@ -57,7 +59,7 @@ let arrayTamanios: any[] = [];
     {#each arrayTamanios as tamanio }
     <label>
       <input type="radio" name="tamanio" value={tamanio.capacidad_x_equipo} required />
-    {tamanio.capacidad_x_equipo}</label><br>
+    F{tamanio.capacidad_x_equipo}</label><br>
     {/each}
     </label>
     </label>

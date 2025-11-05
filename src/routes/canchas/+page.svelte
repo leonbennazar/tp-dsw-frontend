@@ -8,7 +8,7 @@
   async function getCanchas() {
     const req = await fetch('http://localhost:3000/api/canchas/', {method: "GET"});
     const res = await req.json();
-    arrayCanchas = res;  //uso esto porque el array que trae el contenido se llama data
+    arrayCanchas = res.data;  //uso esto porque el array que trae el contenido se llama data
     console.log(arrayCanchas); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
@@ -25,14 +25,14 @@
   </div>
 
       {#await getCanchas()}
-        <h1>Cargando tamaños...</h1>
+        <h1>Cargando canchas...</h1>
 
-        {:then tamanio}
-          <div class="tamanios">
+        {:then canchas}
+          <div class="canchas">
             {#each arrayCanchas as cancha}
             <button class="accioncancha" on:click={() => goto(`/canchas/${cancha.id}`)}>
               <div class ="cancha-card">
-                  <h1>Cancha {cancha.id}</h1>
+                  <h1>Cancha {cancha.numero}</h1>
               </div>
             </button>
             {/each}
@@ -60,7 +60,7 @@
   width:35px;
   cursor:pointer;
 }
-.tamanios{
+.canchas{
   display:flex;
   flex-direction: column;
   justify-content: center;
@@ -71,15 +71,15 @@
 
 
 @media (min-width: 768px) {
-  .tamanios {
+  .canchas {
     display: grid;
     justify-items: center;  
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));        
-    grid-column-gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));        
+    grid-column-gap: 100px;
     grid-row-gap: 60px;
   }
 }
-.tamanios button{
+.canchas button{
   color:white;
   padding: 5px;
   width: 190px;
@@ -91,13 +91,13 @@
   border: none;
 }
 @media (min-width: 768px){
-  .tamanios button{
+  .canchas button{
     width: 240px;
     height: 150px;
   }
 }
 @media (min-width: 1024px){
-  .tamanios button{
+  .canchas button{
     font-size: 20px;
     width: 290px;
     height: 200px;

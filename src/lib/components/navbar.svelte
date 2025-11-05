@@ -12,7 +12,7 @@
     <a href="/" class:selected={$page.url.pathname === '/'}>Inicio</a>
     <a href="/canchas" class:selected={$page.url.pathname === '/canchas'}>Canchas</a>
     <a href="/tamanios" class:selected={$page.url.pathname === '/tamanios'}>Tamaños</a>
-    <a href="/materiales" class:selected={$page.url.pathname === '/materiales'}>Materiales</a>
+    <a href="/tipos" class:selected={$page.url.pathname === '/tipos'}>Tipos</a>
     <button><img class="userimg" src="/user.png" alt="user by stasy"></button>
   </nav>
 </div>
