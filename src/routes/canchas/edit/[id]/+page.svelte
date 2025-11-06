@@ -4,6 +4,7 @@ import {goto} from '$app/navigation';
 import { page } from '$app/stores';
 import { onMount } from 'svelte';
 let arrayTamanios: any[] =[];
+let arrayTipos: any[] =[];
  $: id = $page.params.id;
   let canchaRecibida :any = '';
 
@@ -42,9 +43,16 @@ let arrayTamanios: any[] =[];
     console.log(arrayTamanios); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
-  onMount(getTamanios)
-  onMount(getCancha)
+  async function getTipos() {
+    const req = await fetch('http://localhost:3000/api/tipos/', {method: "GET"});
+    const res = await req.json();
+    arrayTipos = res.data;  //Si el array que devuelve los resultados tiene un nombre, se lo agrego como res.nombre
+    console.log(arrayTipos); //si la consola devuelve entre {}, es objeto, entre [] es array
+  }
 
+  onMount(getTamanios)
+  onMount(getTipos)
+  onMount(getCancha)
 </script>
 
 <NavBar />
@@ -66,10 +74,19 @@ let arrayTamanios: any[] =[];
     <label>Tamaño<br>
     {#each arrayTamanios as tamanio }
     <label>
-      <input type="radio" name="tamanio" value={tamanio.capacidad_x_equipo} required />
+      <input type="radio" name="capacidad_x_equipo" value="{tamanio.capacidad_x_equipo}"/>
     {tamanio.capacidad_x_equipo}</label><br>
     {/each}
     </label>
+
+    <label>Tipo<br>
+    {#each arrayTipos as tipo }
+    <label>
+      <input type="radio" name="id_tipo" value="{tipo.id}" />
+    {tipo.nombre}</label><br>
+    {/each}
+    </label>
+
     </label>
       <button type="submit">Enviar</button>
     </label>
