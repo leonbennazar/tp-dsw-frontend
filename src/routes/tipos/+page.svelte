@@ -51,7 +51,7 @@ async function editartipo(x:number){
           <h1>Haz click en cada uno para mas información</h1>
           <div class="tipos">
             {#each arrayTipos as tipo}
-            <button class="accionTipos" on:click={() => mostrar = tipo.id}>
+            <button class="accionTipos" on:click={() => mostrar = tipo.id_tipo}>
               <div class ="tipo-card">
                   <h1>{tipo.nombre}</h1>
               </div>
@@ -63,7 +63,7 @@ async function editartipo(x:number){
       {/await}
 
         {#each arrayTipos  as tipo}    
-        {#if mostrar === tipo.id}
+        {#if mostrar === tipo.id_tipo}
           <div class="overlay">
             <div class="popup" >
               <h1>{tipo.nombre}</h1>
@@ -74,8 +74,8 @@ async function editartipo(x:number){
                 <h1>Sin techo</h1>
               {/if}
               <button on:click={() => mostrar = 0}>Cerrar</button>
-              <button on:click={() => editartipo(tipo.id)}>Editar</button>
-              <button class ="delbtn" on:click={() => borrarTipo(tipo.id)}>BORRAR</button>
+              <button on:click={() => editartipo(tipo.id_tipo)}>Editar</button>
+              <button class ="delbtn" on:click={() => borrarTipo(tipo.id_tipo)}>BORRAR</button>
             </div>
           </div>
         {/if}
