@@ -31,6 +31,7 @@ async function editartipo(x:number){
   mostrar = 0;
 }
 
+onMount(getTipos)
 </script>
 
 <Navbar></Navbar>

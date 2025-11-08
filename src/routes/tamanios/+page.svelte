@@ -9,7 +9,7 @@
     const req = await fetch('http://localhost:3000/api/tamanios', {method: "GET"});
     const res = await req.json();
     arrayTamanios = res.data;
-    arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo)
+    arrayTamanios.sort((a, b) => a.id_tamanio - b.id_tamanio)
     console.log(arrayTamanios); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 async function borrarTamanio(x:number) {
@@ -31,6 +31,8 @@ async function editarTamanio(x:number){
   mostrar = 0;
 }
 
+onMount(getTamanios)
+
 </script>
 
 <Navbar></Navbar>
@@ -51,7 +53,7 @@ async function editarTamanio(x:number){
             <h1>Haz click en cada uno para mas información</h1>
           <div class="tamanios">
             {#each arrayTamanios as tamanio}
-            <button class="acciontamanio" on:click={() => mostrar = tamanio.capacidad_x_equipo}>
+            <button class="acciontamanio" on:click={() => mostrar = tamanio.id_tamanio}>
               <div class ="tamanio-card">
                   <h1>F{tamanio.capacidad_x_equipo}</h1>
               </div>
@@ -61,15 +63,15 @@ async function editarTamanio(x:number){
 
 
           {#each arrayTamanios as tamanio}    <!--Esto detecta que tamaño se tocó, para mostrar el popup-->
-          {#if mostrar === tamanio.capacidad_x_equipo}
+          {#if mostrar === tamanio.id_tamanio}
             <div class="overlay">
               <div class="popup" >
                 <h1>Equipos de {tamanio.capacidad_x_equipo}</h1>
                 <h1>Ancho: {tamanio.ancho} metros</h1>
                 <h1>Largo: {tamanio.largo} metros</h1>
                 <button on:click={() => mostrar = 0}>Cerrar</button>
-                <button on:click={() => editarTamanio(tamanio.capacidad_x_equipo)}>Editar</button>
-                <button class ="delbtn" on:click={() => borrarTamanio(tamanio.capacidad_x_equipo)}>BORRAR</button>
+                <button on:click={() => editarTamanio(tamanio.id_tamanio)}>Editar</button>
+                <button class ="delbtn" on:click={() => borrarTamanio(tamanio.id_tamanio)}>BORRAR</button>
               </div>
             </div>
           {/if}

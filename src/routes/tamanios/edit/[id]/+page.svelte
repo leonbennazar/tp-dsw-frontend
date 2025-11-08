@@ -45,6 +45,7 @@ import { onMount } from 'svelte';
 <button on:click={() => history.back()}>Volver</button>
 <h1>Editar "F{tamanioRecibido.capacidad_x_equipo}"</h1>
   <form on:submit={Enviar} class="editForm">
+    <input type="number" name="capacidad_x_equipo" required placeholder="Capacidad por equipo" min="1"/>
     <input type="number" name="ancho" required placeholder="Ancho en metros" min="1"/>
     <input type="number" name="largo" required placeholder="Largo en metros" min="1"/>
     <button type="submit">Enviar</button>

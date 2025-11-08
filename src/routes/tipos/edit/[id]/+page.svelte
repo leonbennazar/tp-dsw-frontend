@@ -7,7 +7,7 @@ import { onMount } from 'svelte';
   let tipoRecibido :any = '';
 
 
-  async function getTamanio() {
+  async function getTipo() {
     const req = await fetch(`http://localhost:3000/api/tipos/${id}`, {method: "GET"});
     const res = await req.json();
     tipoRecibido = res
@@ -34,8 +34,7 @@ import { onMount } from 'svelte';
     goto('/tipos')
   }
 
-  onMount(getTamanio)
-
+onMount(getTipo)
 
 </script>
 
