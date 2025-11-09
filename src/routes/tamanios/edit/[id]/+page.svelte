@@ -10,7 +10,7 @@ import { onMount } from 'svelte';
   async function getTamanio() {
     const req = await fetch(`http://localhost:3000/api/tamanios/${id}`, {method: "GET"});
     const res = await req.json();
-    tamanioRecibido = res
+    tamanioRecibido = res.data
     console.log(tamanioRecibido)
   }
   // @ts-ignore
@@ -25,7 +25,7 @@ import { onMount } from 'svelte';
     const jsonData = JSON.stringify(data);
   
     const res = await fetch(`http://localhost:3000/api/tamanios/${id}`, {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },

@@ -10,7 +10,7 @@ import { onMount } from 'svelte';
   async function getTipo() {
     const req = await fetch(`http://localhost:3000/api/tipos/${id}`, {method: "GET"});
     const res = await req.json();
-    tipoRecibido = res
+    tipoRecibido = res.data
     console.log(tipoRecibido)
   }
   // @ts-ignore

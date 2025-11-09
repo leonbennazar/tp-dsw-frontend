@@ -30,7 +30,7 @@
         {:then canchas}
           <div class="canchas">
             {#each arrayCanchas as cancha}
-            <button class="accioncancha" on:click={() => goto(`/canchas/${cancha.id_cancha}`)}>
+            <button class="accioncancha" on:click={() => goto(`/canchas/${cancha.id}`)}>
               <div class ="cancha-card">
                   <h1>Cancha {cancha.numero}</h1>
               </div>

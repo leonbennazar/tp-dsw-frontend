@@ -14,7 +14,7 @@
 
 async function borrarTipo(x:number) {
 
-    if (!confirm('¿Estás seguro de que quieres borrar este tamaño?')) {
+    if (!confirm('¿Estás seguro de que quieres borrar este tipo? Las canchas que lo contengan quedaran sin un tipo asignado.')) {
       return; 
     }
       const respuesta = await fetch(`http://localhost:3000/api/tipos/${x}`, {method: 'DELETE'});
@@ -31,7 +31,6 @@ async function editartipo(x:number){
   mostrar = 0;
 }
 
-onMount(getTipos)
 </script>
 
 <Navbar></Navbar>
@@ -52,7 +51,7 @@ onMount(getTipos)
           <h1>Haz click en cada uno para mas información</h1>
           <div class="tipos">
             {#each arrayTipos as tipo}
-            <button class="accionTipos" on:click={() => mostrar = tipo.id_tipo}>
+            <button class="accionTipos" on:click={() => mostrar = tipo.id}>
               <div class ="tipo-card">
                   <h1>{tipo.nombre}</h1>
               </div>
@@ -64,7 +63,7 @@ onMount(getTipos)
       {/await}
 
         {#each arrayTipos  as tipo}    
-        {#if mostrar === tipo.id_tipo}
+        {#if mostrar === tipo.id}
           <div class="overlay">
             <div class="popup" >
               <h1>{tipo.nombre}</h1>
@@ -75,8 +74,8 @@ onMount(getTipos)
                 <h1>Sin techo</h1>
               {/if}
               <button on:click={() => mostrar = 0}>Cerrar</button>
-              <button on:click={() => editartipo(tipo.id_tipo)}>Editar</button>
-              <button class ="delbtn" on:click={() => borrarTipo(tipo.id_tipo)}>BORRAR</button>
+              <button on:click={() => editartipo(tipo.id)}>Editar</button>
+              <button class ="delbtn" on:click={() => borrarTipo(tipo.id)}>BORRAR</button>
             </div>
           </div>
         {/if}

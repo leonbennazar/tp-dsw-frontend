@@ -9,12 +9,12 @@
     const req = await fetch('http://localhost:3000/api/tamanios', {method: "GET"});
     const res = await req.json();
     arrayTamanios = res.data;
-    arrayTamanios.sort((a, b) => a.id_tamanio - b.id_tamanio)
+    arrayTamanios.sort((a, b) => a.id - b.id)
     console.log(arrayTamanios); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 async function borrarTamanio(x:number) {
 
-    if (!confirm('¿Estás seguro de que quieres borrar este tamaño?')) {
+    if (!confirm('¿Estás seguro de que quieres borrar este tamaño? Las canchas que lo contengan quedaran sin un tamaño asignado.')) {
       return; 
     }
       const respuesta = await fetch(`http://localhost:3000/api/tamanios/${x}`, {method: 'DELETE'});
@@ -50,28 +50,31 @@ onMount(getTamanios)
         <h1>Cargando tamaños...</h1>
 
         {:then tamanio}
+          {#if arrayTamanios.length === 0}
+            <h1>No hay tamaños cargados</h1>
+          {:else}
             <h1>Haz click en cada uno para mas información</h1>
           <div class="tamanios">
             {#each arrayTamanios as tamanio}
-            <button class="acciontamanio" on:click={() => mostrar = tamanio.id_tamanio}>
+            <button class="acciontamanio" on:click={() => mostrar = tamanio.id}>
               <div class ="tamanio-card">
                   <h1>F{tamanio.capacidad_x_equipo}</h1>
               </div>
             </button>
             {/each}
           </div>
-
+          {/if}
 
           {#each arrayTamanios as tamanio}    <!--Esto detecta que tamaño se tocó, para mostrar el popup-->
-          {#if mostrar === tamanio.id_tamanio}
+          {#if mostrar === tamanio.id}
             <div class="overlay">
               <div class="popup" >
                 <h1>Equipos de {tamanio.capacidad_x_equipo}</h1>
                 <h1>Ancho: {tamanio.ancho} metros</h1>
                 <h1>Largo: {tamanio.largo} metros</h1>
                 <button on:click={() => mostrar = 0}>Cerrar</button>
-                <button on:click={() => editarTamanio(tamanio.id_tamanio)}>Editar</button>
-                <button class ="delbtn" on:click={() => borrarTamanio(tamanio.id_tamanio)}>BORRAR</button>
+                <button on:click={() => editarTamanio(tamanio.id)}>Editar</button>
+                <button class ="delbtn" on:click={() => borrarTamanio(tamanio.id)}>BORRAR</button>
               </div>
             </div>
           {/if}

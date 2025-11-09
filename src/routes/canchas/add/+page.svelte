@@ -66,7 +66,7 @@ let arrayTipos: any[] = [];
     <label>Tamaño<br>
     {#each arrayTamanios as tamanio }
     <label>
-      <input type="radio" name="capacidad_x_equipo" value="{tamanio.capacidad_x_equipo}" />
+      <input type="radio" name="tamanio" value="{tamanio.id}" />
     F{tamanio.capacidad_x_equipo}</label><br>
     {/each}
     </label>
@@ -74,7 +74,7 @@ let arrayTipos: any[] = [];
     <label>Tipo<br>
     {#each arrayTipos as tipo }
     <label>
-      <input type="radio" name="id_tipo" value="{tipo.id}" />
+      <input type="radio" name="tipo" value="{tipo.id}" />
     {tipo.nombre}</label><br>
     {/each}
     </label>
