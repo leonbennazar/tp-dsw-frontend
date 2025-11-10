@@ -28,6 +28,9 @@
         <h1>Cargando canchas...</h1>
 
         {:then canchas}
+        {#if arrayCanchas.length === 0}}
+          <h1>No hay canchas cargadas</h1>
+        {:else}
           <div class="canchas">
             {#each arrayCanchas as cancha}
             <button class="accioncancha" on:click={() => goto(`/canchas/${cancha.id}`)}>
@@ -37,6 +40,7 @@
             </button>
             {/each}
           </div>
+        {/if}
       {:catch err}
       <p style="color:red">Ocurrió un error con la base de datos</p>
       {/await}
@@ -69,6 +73,13 @@
   gap: 60px;
 }
 
+
+h1{
+  size:300px;
+  color:white;
+  display: flex;
+  justify-content: center;
+}
 
 @media (min-width: 768px) {
   .canchas {

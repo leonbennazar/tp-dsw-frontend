@@ -48,6 +48,9 @@ async function editartipo(x:number){
         <h1>Cargando tipos...</h1>
 
         {:then tipo}
+        {#if arrayTipos.length === 0}
+          <h1>No hay tipos cargados</h1>
+        {:else}
           <h1>Haz click en cada uno para mas información</h1>
           <div class="tipos">
             {#each arrayTipos as tipo}
@@ -58,6 +61,7 @@ async function editartipo(x:number){
             </button>
             {/each}
           </div>
+        {/if}
       {:catch err}
       <p style="color:red">Ocurrió un error con la base de datos</p>
       {/await}

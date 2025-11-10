@@ -25,7 +25,15 @@ let arrayTipos: any[] = [];
       },
       body: jsonData,
     });
-    goto('/canchas')
+   if (res.status === 409) {
+  alert('Ya existe ese numero de cancha');
+   }
+   if(res.status===500){
+   alert('Error interno') 
+   }
+   
+  goto('/canchas')
+  
   }
 
   async function getTamanios() {
@@ -35,6 +43,8 @@ let arrayTipos: any[] = [];
     arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo)
     console.log(arrayTamanios); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
+  
+
   async function getTipos() {
     const req = await fetch('http://localhost:3000/api/tipos/', {method: "GET"});
     const res = await req.json();
@@ -63,14 +73,21 @@ let arrayTipos: any[] = [];
       <label>
         <input type="radio" name="tipo_turno" value="en_punto" required />
         En punto
+
+    {#if arrayTamanios.length !=0}
     <label>Tamaño<br>
-    {#each arrayTamanios as tamanio }
-    <label>
-      <input type="radio" name="tamanio" value="{tamanio.id}" />
-    F{tamanio.capacidad_x_equipo}</label><br>
-    {/each}
+      {#each arrayTamanios as tamanio }
+      <label>
+        <input type="radio" name="tamanio" value="{tamanio.id}" />
+      F{tamanio.capacidad_x_equipo}</label><br>
+      {/each}
     </label>
-    
+    {:else}
+    <p>No hay tamaños disponibles</p>
+    {/if}
+
+
+    {#if arrayTipos.length !=0}
     <label>Tipo<br>
     {#each arrayTipos as tipo }
     <label>
@@ -78,7 +95,9 @@ let arrayTipos: any[] = [];
     {tipo.nombre}</label><br>
     {/each}
     </label>
-
+    {:else}
+    <p>No hay tipos disponibles</p>
+    {/if}
     </label>
       <button type="submit">Enviar</button>
     </label>

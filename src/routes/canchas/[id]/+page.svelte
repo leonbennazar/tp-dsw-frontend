@@ -9,7 +9,7 @@
   async function getCancha() {
     const req = await fetch(`http://localhost:3000/api/canchas/${id}`, {method: "GET"});
     const res = await req.json();
-    canchaRecibida = res
+    canchaRecibida = res.data
     console.log(canchaRecibida)
   }
 
@@ -37,8 +37,26 @@ async function borrarCancha() {
   {:then cancha}
   <button class ="editbtn"on:click ={() => goto(`/canchas/edit/${id}`)}>Editar</button>
   <button class ="delbtn"on:click ={() => borrarCancha()}>BORRAR</button>
-    <h1>{canchaRecibida.nombre}</h1>
-      <h2>{canchaRecibida.tipo_turno}<br>{canchaRecibida.items}</h2>
+
+  <div class="canchaData">
+    <div class="columna">
+      <h2>Cancha</h2>
+      <h1>{canchaRecibida.numero}</h1>
+      <h3>"{canchaRecibida.nombre}"</h3>
+      {#if canchaRecibida.tamanio === null}
+      <p>• Sin tamaño</p>
+      {:else}
+      <p>• Futbol {canchaRecibida.tamanio.capacidad_x_equipo}</p>
+      {/if}
+      {#if canchaRecibida.tipo === null}
+      <p>• Sin tipo</p>
+      {:else}
+      <p>• {canchaRecibida.tipo.nombre}</p>
+      {/if}
+    </div>
+  </div>
+
+
   {:catch err}
     <p style="color:red">Hubo un problema con la base de datos</p>
   {/await}
@@ -50,9 +68,21 @@ async function borrarCancha() {
   .content{
   margin-top: 70px;
 }
-
-  h1, h2{
+.columna h2{
+  color: white;
+  font-size: large;
+  font-size: 40px;
+}
+.columna  h1,h3{
     color:white;
+    margin-top: -10px;
+    align-items: center;
+  }
+.columna h1{
+    font-size: 60px;
+  }
+.columna p{
+    color: white;
   }
   button{
     height:30px;
@@ -65,4 +95,24 @@ async function borrarCancha() {
     background-color: rgb(126, 30, 46);
     color: white;
   }
+
+
+.canchaData{
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding:10px;
+
+}
+.columna{
+  position: absolute;
+  left: 0;
+  display: flex;
+  height:100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background-color:#2c2d83 ;
+}
 </style>

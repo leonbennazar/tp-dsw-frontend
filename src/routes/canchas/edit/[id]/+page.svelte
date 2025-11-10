@@ -12,7 +12,7 @@ let arrayTipos: any[] =[];
   async function getCancha() {
     const req = await fetch(`http://localhost:3000/api/canchas/${id}`, {method: "GET"});
     const res = await req.json();
-    canchaRecibida = res
+    canchaRecibida = res.data
     console.log(canchaRecibida)
   }
   // @ts-ignore
@@ -27,7 +27,7 @@ let arrayTipos: any[] =[];
     const jsonData = JSON.stringify(data);
   
     const res = await fetch(`http://localhost:3000/api/canchas/${id}`, {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -71,22 +71,31 @@ let arrayTipos: any[] =[];
       <label>
         <input type="radio" name="tipo_turno" value="en_punto" required />
         En punto
-    <label>Tamaño<br>
-    {#each arrayTamanios as tamanio }
-    <label>
-      <input type="radio" name="capacidad_x_equipo" value="{tamanio.capacidad_x_equipo}"/>
-    {tamanio.capacidad_x_equipo}</label><br>
-    {/each}
-    </label>
 
+    {#if arrayTamanios.length !=0}
+    <label>Tamaño<br>
+      {#each arrayTamanios as tamanio }
+      <label>
+        <input type="radio" name="tamanio" value="{tamanio.id}" />
+      F{tamanio.capacidad_x_equipo}</label><br>
+      {/each}
+    </label>
+    {:else}
+    <p>No hay tamaños disponibles</p>
+    {/if}
+
+
+    {#if arrayTipos.length !=0}
     <label>Tipo<br>
     {#each arrayTipos as tipo }
     <label>
-      <input type="radio" name="id_tipo" value="{tipo.id}" />
+      <input type="radio" name="tipo" value="{tipo.id}" />
     {tipo.nombre}</label><br>
     {/each}
     </label>
-
+    {:else}
+    <p>No hay tipos disponibles</p>
+    {/if}
     </label>
       <button type="submit">Enviar</button>
     </label>
