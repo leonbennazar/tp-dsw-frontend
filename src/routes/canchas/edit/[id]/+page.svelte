@@ -21,13 +21,15 @@ let arrayTipos: any[] =[];
 
     const form = event.target;
     const formData = new FormData(form);
+		const data: any = Object.fromEntries(formData.entries());
+		if (data.tipo_turno === 'en_punto') data.turnos = [1, 2, 3, 4, 5];
+		else data.turnos = [6, 7, 8, 9, 10];
 
-    const data = Object.fromEntries(formData.entries());
 
     const jsonData = JSON.stringify(data);
   
     const res = await fetch(`http://localhost:3000/api/canchas/${id}`, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
@@ -35,6 +37,7 @@ let arrayTipos: any[] =[];
     });
     goto('/canchas')
   }
+
   async function getTamanios() {
     const req = await fetch('http://localhost:3000/api/tamanios', {method: "GET"});
     const res = await req.json();
@@ -59,7 +62,7 @@ let arrayTipos: any[] =[];
 
 <div class="content">
 <button on:click={() => history.back()}>Volver</button>
-<h1>Editar "{canchaRecibida.nombre}"</h1>
+<h1>Editar cancha "{canchaRecibida.numero}"</h1>
   <form on:submit={Enviar} class="editForm">
     <input type="text" name="nombre" required placeholder="Nombre"/>
     <input type="number" name="numero" required placeholder="Numero de cancha" min="1"/>

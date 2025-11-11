@@ -9,6 +9,7 @@
     const req = await fetch('http://localhost:3000/api/canchas/', {method: "GET"});
     const res = await req.json();
     arrayCanchas = res.data;  //uso esto porque el array que trae el contenido se llama data
+    arrayCanchas.sort((a, b) => a.numero - b.numero)
     console.log(arrayCanchas); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
