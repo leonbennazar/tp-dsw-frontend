@@ -9,7 +9,7 @@
 		const req = await fetch('http://localhost:3000/api/tamanios', { method: 'GET' });
 		const res = await req.json();
 		arrayTamanios = res.data;
-		arrayTamanios.sort((a, b) => a.id - b.id);
+		arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo);
 		console.log(arrayTamanios); //si la consola devuelve entre {}, es objeto, entre [] es array
 	}
 	async function borrarTamanio(x: number) {

@@ -3,8 +3,9 @@
   import {goto} from '$app/navigation';
 	import Navbar from '$lib/components/navbar.svelte';
   let mostrar: any= '';
-  let arrayCanchas: any[] = [];  //en typescript: data va a ser un array de cualquier tipo
-
+  // svelte-ignore non_reactive_update
+    let arrayCanchas: any[] = [];  //en typescript: data va a ser un array de cualquier tipo
+  let filtro: number = $state(0)
   async function getCanchas() {
     const req = await fetch('http://localhost:3000/api/canchas/', {method: "GET"});
     const res = await req.json();
@@ -13,6 +14,16 @@
     console.log(arrayCanchas); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
+	// svelte-ignore non_reactive_update
+		let arrayTamanios: any[] = $state([]); 
+
+	async function getTamanios() {
+		const req = await fetch('http://localhost:3000/api/tamanios', { method: 'GET' });
+		const res = await req.json();
+		arrayTamanios = res.data;
+		arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo);
+  }
+onMount(getTamanios)
 </script>
 
 <Navbar></Navbar>
@@ -22,23 +33,33 @@
 <div class ="content">
 
   <div class ="addbtn">
-    <button on:click ={(()=> goto('/canchas/add'))}>+</button>
+    <button onclick ={(()=> goto('/canchas/add'))}>+</button>
   </div>
+
 
       {#await getCanchas()}
         <h1>Cargando canchas...</h1>
 
         {:then canchas}
-        {#if arrayCanchas.length === 0}}
+        {#if arrayCanchas.length === 0}
           <h1>No hay canchas cargadas</h1>
         {:else}
+        <div class ="filtrosbtn">
+          <button onclick={() => filtro = 0}>Sin filtro</button>
+          {#each arrayTamanios as tamanio}
+          <button onclick={() => filtro = tamanio.id}>F{tamanio.capacidad_x_equipo}</button>
+          {/each}
+
+        </div>
           <div class="canchas">
             {#each arrayCanchas as cancha}
-            <button class="accioncancha" on:click={() => goto(`/canchas/${cancha.id}`)}>
+            {#if filtro === 0 || cancha.tamanio?.id === filtro }
+            <button class="accioncancha" onclick={() => goto(`/canchas/${cancha.id}`)}>
               <div class ="cancha-card">
                   <h1>Cancha {cancha.numero}</h1>
               </div>
             </button>
+            {/if}
             {/each}
           </div>
         {/if}
@@ -55,7 +76,11 @@
 .content{
   margin-top: 70px;
 }
-
+.filtrosbtn{
+  display: flex;
+  gap:5px;
+  cursor: pointer    /*te dejo para que le des estilo lucca*/
+}
 .addbtn button{
   background-color: #00B894;
   border:none;
