@@ -6,7 +6,17 @@
 	let canchaRecibida: any = '';
 
 	let fechaSelec = new Date();
+/*cambios*/
+	let turnosDisponibles: any[] = [];
 
+$: if (canchaRecibida && fechaSelec) {
+	getReservasPorFecha().then((reservas) => {
+		turnosDisponibles = canchaRecibida.turnos.filter(
+			(t: any) => !reservas.some((r: any) => r.turno.id === t.id)
+		);
+	});
+}
+/*cambios*/
 	async function getCancha() {
 		const req = await fetch(`http://localhost:3000/api/canchas/${id}`, { method: 'GET' });
 		const res = await req.json();
@@ -37,7 +47,14 @@
 			})
 		});
 	}
-
+/*cambios*/
+	async function getReservasPorFecha() {
+		const fechaISO = new Date(fechaSelec).toISOString().split('T')[0]; // YYYY-MM-DD
+		const req = await fetch(`http://localhost:3000/api/reservas?cancha=${id}&fecha=${fechaISO}`);
+		const res = await req.json();
+		return res.data || [];
+	}
+/*cambios*/
 
 </script>
 
@@ -88,13 +105,69 @@
 		<p style="color:red">Hubo un problema con la base de datos</p>
 	{/await}
 </div>
+/*cambios*/
+<div class="listadoTurnos">
+	<label>
+		<h3 style="color:white">Seleccionar fecha:</h3>
+		<input type="date" bind:value={fechaSelec} />
+	</label>
+
+	{#if turnosDisponibles.length === 0}
+		<p style="color:white">No hay turnos disponibles para esta fecha.</p>
+	{:else}
+		{#each turnosDisponibles as turno}
+			<div class="turno-item">
+				<span>{turno.hora_ini}</span>
+				<button class="addReservabtn" on:click={() => reservar(turno.id)}>+</button>
+			</div>
+		{/each}
+	{/if}
+</div>
+/*cambios*/
 
 <style>
-	.listadoTurnos {
-		display: grid;
-		grid-column-gap: 10px;
-		grid-row-gap: 6px;
-	}
+	/*cambios*/
+.listadoTurnos {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin: 30px auto;
+	background-color: rgba(255, 255, 255, 0.05);
+	padding: 15px;
+	border-radius: 10px;
+	width: fit-content;
+}
+
+.turno-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #2c2d83;
+	padding: 10px 20px;
+	border-radius: 8px;
+	color: white;
+	font-size: 18px;
+	box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.addReservabtn {
+	background-color: #00b894;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	font-size: 18px;
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.addReservabtn:hover {
+	transform: scale(1.1);
+	box-shadow: 0 0 10px rgba(0, 184, 148, 0.6);
+}
+/*cambios*/
+
 	.content {
 		margin-top: 70px;
 	}

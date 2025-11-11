@@ -85,15 +85,33 @@
 	.content {
 		margin-top: 70px;
 	}
-	.addbtn button {
+	.addbtn {
+		position: fixed;
+		top: 80px;
+		right: 30px;
+		z-index: 10;
+	}
+
+	.addbtn button{
 		background-color: #00b894;
 		border: none;
 		color: white;
-		border-radius: 5px;
-		height: 35px;
-		width: 35px;
+		border-radius: 50%;
+		width: 45px;
+		height: 45px;
+		font-size: 24px;
+		font-weight: bold;
 		cursor: pointer;
+		box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+		transition: transform 0.2s, box-shadow 0.2s;
 	}
+
+	.addbtn button:hover {
+		transform: scale(1.1);
+		box-shadow: 0 5px 15px rgba(0, 184, 148, 0.5);
+	}
+
+
 	.delbtn {
 		background-color: rgb(126, 30, 46);
 		color: white;

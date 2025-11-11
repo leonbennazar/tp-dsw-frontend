@@ -24,6 +24,9 @@
 		arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo);
   }
 onMount(getTamanios)
+
+
+
 </script>
 
 <Navbar></Navbar>
@@ -45,9 +48,16 @@ onMount(getTamanios)
           <h1>No hay canchas cargadas</h1>
         {:else}
         <div class ="filtrosbtn">
-          <button onclick={() => filtro = 0}>Sin filtro</button>
+          <button
+          onclick={() => filtro = 0}
+          class:active={filtro === 0}>
+          Sin filtro</button>
           {#each arrayTamanios as tamanio}
-          <button onclick={() => filtro = tamanio.id}>F{tamanio.capacidad_x_equipo}</button>
+            <button 
+              onclick={() => filtro = Number(tamanio.id)} 
+              class:active={filtro === Number(tamanio.id)}>
+              F{tamanio.capacidad_x_equipo}
+            </button>
           {/each}
 
         </div>
@@ -77,19 +87,69 @@ onMount(getTamanios)
   margin-top: 70px;
 }
 .filtrosbtn{
-  display: flex;
-  gap:5px;
-  cursor: pointer    /*te dejo para que le des estilo lucca*/
-}
-.addbtn button{
-  background-color: #00B894;
-  border:none;
-  color: white;
+  padding: 6px 10px;
+  border: none;
   border-radius: 5px;
-  height: 35px;
-  width:35px;
-  cursor:pointer;
+  cursor: pointer;
+  background: transparent;
+  color: #000;
+  transition: background 0.2s ease;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 10px 0;
 }
+
+.filtrosbtn button {
+  background-color: #3a3a3a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.filtrosbtn button:hover {
+  background-color: #555;
+  transform: translateY(-1px);
+}
+
+/* 🔹 estilo cuando está activo */
+.filtrosbtn button.active {
+  background-color: #00b894;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 0 6px rgba(0, 184, 148, 0.6);
+}
+
+.addbtn {
+  position: fixed;
+  top: 80px;
+  right: 30px;
+  z-index: 10;
+}
+
+.addbtn button{
+  background-color: #00b894;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.addbtn button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 184, 148, 0.5);
+}
+
 .canchas{
   display:flex;
   flex-direction: column;
@@ -99,6 +159,21 @@ onMount(getTamanios)
   gap: 60px;
 }
 
+.canchas button {
+  background: linear-gradient(135deg, #2c2d83, #3939b4);
+  border: none;
+  border-radius: 18px;
+  color: white;
+  font-weight: 600;
+  font-size: 1.2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.canchas button:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
 
 h1{
   size:300px;
