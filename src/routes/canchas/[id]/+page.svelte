@@ -130,16 +130,16 @@
 	width: fit-content;
 }
 
-.turno-item {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	background: #2c2d83;
-	padding: 10px 20px;
-	border-radius: 8px;
+.backbtn {
+	background-color: #0984e3;
 	color: white;
-	font-size: 18px;
-	box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.4);
+	border: none;
+	border-radius: 5px;
+	padding: 8px 12px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	margin-top: 10px;
 }
 
 .addReservabtn {
