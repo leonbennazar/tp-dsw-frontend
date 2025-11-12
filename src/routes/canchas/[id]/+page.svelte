@@ -6,17 +6,7 @@
 	let canchaRecibida: any = '';
 
 	let fechaSelec = new Date();
-/*cambios*/
-	let turnosDisponibles: any[] = [];
 
-$: if (canchaRecibida && fechaSelec) {
-	getReservasPorFecha().then((reservas) => {
-		turnosDisponibles = canchaRecibida.turnos.filter(
-			(t: any) => !reservas.some((r: any) => r.turno.id === t.id)
-		);
-	});
-}
-/*cambios*/
 	async function getCancha() {
 		const req = await fetch(`http://localhost:3000/api/canchas/${id}`, { method: 'GET' });
 		const res = await req.json();
@@ -46,15 +36,28 @@ $: if (canchaRecibida && fechaSelec) {
 				estado_reserva: 'pendiente'
 			})
 		});
+		await getCancha(); // Actualiza los datos después de reservar
 	}
-/*cambios*/
-	async function getReservasPorFecha() {
-		const fechaISO = new Date(fechaSelec).toISOString().split('T')[0]; // YYYY-MM-DD
-		const req = await fetch(`http://localhost:3000/api/reservas?cancha=${id}&fecha=${fechaISO}`);
-		const res = await req.json();
-		return res.data || [];
+
+	async function cancelarReserva(turno_id: number, fecha: Date) {
+		const reserva = canchaRecibida.reservas.find((r: any) => 
+			r.turno === turno_id && 
+			new Date(r.fecha_reserva).toISOString().slice(0, 10) === new Date(fecha).toISOString().slice(0, 10) &&
+			r.estado_reserva === 'pendiente'
+		);
+
+		await fetch(`http://localhost:3000/api/reservas/${reserva.id}`, {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				estado_reserva: 'cancelada'
+			})
+		});
+
+		await getCancha();
 	}
-/*cambios*/
+	
+	
 
 </script>
 
@@ -70,12 +73,22 @@ $: if (canchaRecibida && fechaSelec) {
 
 		<div class="listadoTurnos">
 			<label><input type="date" name="fecha" bind:value={fechaSelec} /></label>
-        {#each canchaRecibida.turnos as turno}
-          <h1>
-            {turno.hora_ini}<button class="addReservabtn" on:click={() => reservar(turno.id)}
-              >+</button
-            >
-          </h1>
+        {#each canchaRecibida.turnos as turno} 
+									{#if !canchaRecibida.reservas?.some((r: { turno: any; fecha_reserva: any; estado_reserva: any }) => r.turno === turno.id 
+									&& new Date(r.fecha_reserva).toISOString().slice(0,10) === new Date(fechaSelec).toISOString().slice(0,10)
+									&& r.estado_reserva === 'pendiente')}
+									<!--la funcion transforma la fecha a string y solo evalua los primeros 10 digitos, osea el formato yyyymmdd, 
+									tambien analiza que el estado no sea pendiente, es decir que muestra disponible un turno que haya sido reservado y luego cancelado-->
+									<h1>
+										{turno.hora_ini}<button class="addReservabtn" on:click={() => reservar(turno.id)}
+											>+</button
+										>
+									</h1>
+									{:else}
+										{turno.hora_ini}<button class="delReservabtn" on:click={() => cancelarReserva(turno.id, fechaSelec)}
+											>-</button
+										>
+									{/if}
         {/each}
 		</div>
 		<div class="canchaData">
@@ -96,34 +109,13 @@ $: if (canchaRecibida && fechaSelec) {
 			</div>
 		</div>
 
-		<div class="listadoTurnos">
-			{#each canchaRecibida.turnos as turnos}
-				<h1>{turnos.hora_ini}</h1>
-			{/each}
-		</div>
+
 	{:catch err}
 		<p style="color:red">Hubo un problema con la base de datos</p>
 	{/await}
 </div>
-/*cambios*/
-<div class="listadoTurnos">
-	<label>
-		<h3 style="color:white">Seleccionar fecha:</h3>
-		<input type="date" bind:value={fechaSelec} />
-	</label>
 
-	{#if turnosDisponibles.length === 0}
-		<p style="color:white">No hay turnos disponibles para esta fecha.</p>
-	{:else}
-		{#each turnosDisponibles as turno}
-			<div class="turno-item">
-				<span>{turno.hora_ini}</span>
-				<button class="addReservabtn" on:click={() => reservar(turno.id)}>+</button>
-			</div>
-		{/each}
-	{/if}
-</div>
-/*cambios*/
+
 
 <style>
 	/*cambios*/

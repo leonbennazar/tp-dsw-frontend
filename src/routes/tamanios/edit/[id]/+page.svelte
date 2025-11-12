@@ -31,6 +31,12 @@ import { onMount } from 'svelte';
       },
       body: jsonData,
     });
+		if (res.status === 409) {
+			alert('Ya existe un tamaño con dicha capacidad de equipo');
+		}
+		if (res.status === 500) {
+			alert('Error interno');
+		}
     goto('/tamanios')
   }
 
