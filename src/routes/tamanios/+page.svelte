@@ -69,9 +69,9 @@
 						<h1>Equipos de {tamanio.capacidad_x_equipo}</h1>
 						<h1>Ancho: {tamanio.ancho} metros</h1>
 						<h1>Largo: {tamanio.largo} metros</h1>
-						<button on:click={() => (mostrar = 0)}>Cerrar</button>
-						<button on:click={() => editarTamanio(tamanio.id)}>Editar</button>
-						<button class="delbtn" on:click={() => borrarTamanio(tamanio.id)}>BORRAR</button>
+						<button class = "cerrar" on:click={() => (mostrar = 0)}>Cerrar</button>
+						<button class = "editar" on:click={() => editarTamanio(tamanio.id)}>Editar</button>
+						<button class="borrar" on:click={() => borrarTamanio(tamanio.id)}>BORRAR</button>
 					</div>
 				</div>
 			{/if}
@@ -118,9 +118,13 @@
 	}
 
 	button {
-		height: 30px;
 		border: none;
+		border-radius: 8px;
+		padding: 8px 16px;
+		font-size: 16px;
 		cursor: pointer;
+		font-weight: 500;
+		transition: all 0.2s ease-in-out;
 	}
 
 	.tamanios {
@@ -195,5 +199,34 @@
 		width: 100%;
 		height: 100%;
 		background: #111111b4;
+	}
+	.cerrar {
+		background-color: #007bff;
+		color: white;
+	}
+
+	.cerrar:hover {
+		background-color: #005ec4;
+		transform: translateY(-1px);
+	}
+
+	.editar {
+		background-color: #00bfa6;
+		color: white;
+	}
+
+	.editar:hover {
+		background-color: #009e89;
+		transform: translateY(-1px);
+	}
+
+	.borrar {
+		background-color: #c62828;
+		color: white;
+	}
+
+	.borrar:hover {
+		background-color: #a32020;
+		transform: translateY(-1px);
 	}
 </style>

@@ -6,7 +6,24 @@
 	let canchaRecibida: any = '';
 
 	let fechaSelec = new Date();
+	const ahoraFecha = new Date();
+	let fechaHoy = ahoraFecha.toISOString().slice(0,10);
+	const horaActual = ahoraFecha.getHours();
+	const minutoActual = ahoraFecha.getMinutes(); 
 
+function desamarcarTurnos(horaturno: string) {
+	if (new Date(fechaSelec).toISOString().slice(0,10) === fechaHoy) {
+				const [horaTurno, minutoTurno] = horaturno.split(':').map(Number);
+				if (horaTurno < horaActual) {
+					return true;
+				} else if (horaTurno === horaActual && minutoTurno < minutoActual) {
+					return true;
+				}														
+			;
+		}
+		return false;
+		
+	}
 	async function getCancha() {
 		const req = await fetch(`http://localhost:3000/api/canchas/${id}`, { method: 'GET' });
 		const res = await req.json();
@@ -56,39 +73,46 @@
 
 		await getCancha();
 	}
-	
-	
 
 </script>
 
 <NavBar />
 
 <div class="content">
-	<button class="backbtn" on:click={() => history.back()}>Volver</button>
 	{#await getCancha()}
 		<h1>Cargando cancha...</h1>
 	{:then cancha}
-		<button class="editbtn" on:click={() => goto(`/canchas/edit/${id}`)}>Editar</button>
-		<button class="delbtn" on:click={() => borrarCancha()}>BORRAR</button>
+		<div class="acciones">
+			<button class="btn volver" on:click={() => history.back()}>Volver</button>
+			<button class="btn editar" on:click={() => goto(`/canchas/edit/${id}`)}>Editar</button>
+			<button class="btn borrar" on:click={() => borrarCancha()}>Borrar</button>
+		</div>
 
 		<div class="listadoTurnos">
-			<label><input type="date" name="fecha" bind:value={fechaSelec} /></label>
-        {#each canchaRecibida.turnos as turno} 
-									{#if !canchaRecibida.reservas?.some((r: { turno: any; fecha_reserva: any; estado_reserva: any }) => r.turno === turno.id 
-									&& new Date(r.fecha_reserva).toISOString().slice(0,10) === new Date(fechaSelec).toISOString().slice(0,10)
-									&& r.estado_reserva === 'pendiente')}
-									<!--la funcion transforma la fecha a string y solo evalua los primeros 10 digitos, osea el formato yyyymmdd, 
-									tambien analiza que el estado no sea pendiente, es decir que muestra disponible un turno que haya sido reservado y luego cancelado-->
-									<h1>
-										{turno.hora_ini}<button class="addReservabtn" on:click={() => reservar(turno.id)}
-											>+</button
-										>
-									</h1>
-									{:else}
-										{turno.hora_ini}<button class="delReservabtn" on:click={() => cancelarReserva(turno.id, fechaSelec)}
-											>-</button
-										>
-									{/if}
+			<label><input type="date" name="fecha" bind:value={fechaSelec} min={fechaHoy} /></label>
+        {#each canchaRecibida.turnos as turno}
+			{#if canchaRecibida.reservas?.some((r: { turno: any; fecha_reserva: any;  }) => r.turno === turno.id 
+			&& new Date(r.fecha_reserva).toISOString().slice(0,10) === new Date(fechaSelec).toISOString().slice(0,10) && desamarcarTurnos(turno.hora_ini))}
+			<h1 class= "reservado">
+				{turno.hora_ini}<button class="NoSePuede"
+					>No disponible</button
+				>
+			</h1>
+			{:else if !canchaRecibida.reservas?.some((r: { turno: any; fecha_reserva: any; estado_reserva: any }) => r.turno === turno.id 
+			&& new Date(r.fecha_reserva).toISOString().slice(0,10) === new Date(fechaSelec).toISOString().slice(0,10)
+			&& r.estado_reserva === 'pendiente')}
+			<h1>
+				{turno.hora_ini}<button class="addReservabtn" on:click={() => reservar(turno.id)}
+					>Resevar</button
+				>
+			</h1>
+			{:else}
+			<h1 class= "reservado">
+				{turno.hora_ini}<button class="delReservabtn" on:click={() => cancelarReserva(turno.id, fechaSelec)}
+					>-</button
+				>
+			</h1>
+			{/if}
         {/each}
 		</div>
 		<div class="canchaData">
@@ -122,28 +146,52 @@
 .listadoTurnos {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	gap: 10px;
 	margin: 30px auto;
 	background-color: rgba(255, 255, 255, 0.05);
 	padding: 15px;
 	border-radius: 10px;
-	width: fit-content;
+
 }
 
-.backbtn {
-	background-color: #0984e3;
+
+@media (min-width: 1024px) {
+	.listadoTurnos {
+		flex-direction: row;
+		width: fit-content;
+		margin: auto;
+	}
+}
+.addReservabtn {
+	position: relative;
+	background-color: #00b894;
 	color: white;
 	border: none;
-	border-radius: 5px;
-	padding: 8px 12px;
-	font-size: 16px;
+	border-radius: 50%;
+	width: 100px;
+	height: 30px;
+	font-size: 18px;
 	cursor: pointer;
-	transition: background-color 0.3s ease;
-	margin-top: 10px;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	margin-left:10px;
 }
 
-.addReservabtn {
-	background-color: #00b894;
+.addReservabtn:hover {
+	transform: scale(1.1);
+	box-shadow: 0 0 10px rgba(0, 184, 148, 0.6);
+}
+.reservado{
+	color:grey
+}
+
+h1{
+	color:white
+}
+
+.delReservabtn {
+	background-color: #c62828;
 	color: white;
 	border: none;
 	border-radius: 50%;
@@ -152,16 +200,33 @@
 	font-size: 18px;
 	cursor: pointer;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	margin-left:10px;
 }
 
-.addReservabtn:hover {
+.delReservabtn:hover {
 	transform: scale(1.1);
-	box-shadow: 0 0 10px rgba(0, 184, 148, 0.6);
+	box-shadow: 0 0 10px #a32020;
 }
-/*cambios*/
+.NoSePuede {
+	background-color: #4d4d4d;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	width: 130px;
+	height: 30px;
+	font-size: 18px;
+	cursor: not-allowed;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	margin-left:10px;
+}
+
+
+
+
 
 	.content {
 		margin-top: 70px;
+		display: flex;
 	}
 	.columna h2 {
 		color: white;
@@ -183,13 +248,54 @@
 	button {
 		height: 30px;
 	}
-	button:hover {
-		cursor: pointer;
+
+
+	.acciones {
+		display: flex;
+		gap: 10px;
+		margin-top: 0px;
+		position: absolute;
+
 	}
 
-	.delbtn {
-		background-color: rgb(126, 30, 46);
+	.btn {
+		border: none;
+		border-radius: 8px;
+		padding: 8px 16px;
+		font-size: 16px;
+		cursor: pointer;
+		font-weight: 500;
+		transition: all 0.2s ease-in-out;
+	}
+
+	.volver {
+		background-color: #007bff;
 		color: white;
+	}
+
+	.volver:hover {
+		background-color: #005ec4;
+		transform: translateY(-1px);
+	}
+
+	.editar {
+		background-color: #00bfa6;
+		color: white;
+	}
+
+	.editar:hover {
+		background-color: #009e89;
+		transform: translateY(-1px);
+	}
+
+	.borrar {
+		background-color: #c62828;
+		color: white;
+	}
+
+	.borrar:hover {
+		background-color: #a32020;
+		transform: translateY(-1px);
 	}
 
 	.canchaData {
@@ -208,5 +314,9 @@
 		align-items: center;
 		padding: 10px;
 		background-color: #2c2d83;
+		margin-top:30px
 	}
+h1{
+	cursor: default;
+}
 </style>

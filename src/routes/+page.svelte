@@ -8,17 +8,17 @@
 <div class= "content">
 	
 	<div class="container">
-	
+	<h1>Mi turno FC</h1>
 			<div class="slider">
 				<div class="imagenes">
 					<img src= "/cancha1.jpg" alt="">
-					<img src= "https://www.paralimpicos.es/sites/default/files/inline-images/Futbol5_Espa%C3%B1a%20Argentina%203%C2%BA%20y%204%C2%BA%20puesto_03.jpg" alt="">
-					<img src= "https://media.lacapital.com.ar/p/d43ec43b5d6a529c412ab317534676d7/adjuntos/204/imagenes/029/953/0029953122/1200x675/smart/futbol-5jpg.jpg" alt="">
-					<img src= "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3It7Pvx8N0nr8GLlfBbkpTWa5F3IaiM_xjw&s" alt="">
+					<img src= "/cancha2.jpeg" alt="">
+					<img src= "/cancha3.jpg" alt="">
+					<img src= "/cancha4.jpeg" alt="">
 				</div>
 				
 			</div>
-
+			<h3>¡Reservá tu cancha de fútbol en minutos!</h3>
 			<nav>
 				<button on:click={()=> goto('/about')}>Sobre nosotros</button>
 				<button on:click={()=> goto('/canchas')}>Hacé tu reserva</button>
@@ -33,6 +33,7 @@
 <style>
 	.content{
 		margin-top: 70px;
+		text-align: center;
 	}
 
 	.container{
@@ -43,17 +44,17 @@
 	}
 
 	button{
-		font-size: 20px;
+		font-size: 26px;
 		background-color:#2c2d83;
 		border-radius: 5px;
 		border: none;
 		color: white;
 	}
 
-  button:hover {
+	button:hover {
     color: #5f69f5;
 		cursor: pointer;
-  }
+	}
 
 	.slider{
 		display: flex;
@@ -90,4 +91,7 @@
 		100%{transform: translateX(-300%)}
 	}
 
+h1, h3{
+	color:white
+}
 </style>

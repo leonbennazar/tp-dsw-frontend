@@ -42,13 +42,13 @@ import {goto} from '$app/navigation';
 <NavBar />
 
 <div class="content">
-<button on:click={() => history.back()}>Volver</button>
+<button class = "volver" on:click={() => history.back()}>Volver</button>
 <h1>Agregar tamaño</h1>
   <form on:submit={Enviar} class="editForm">
     <input type="number" name="capacidad_x_equipo" required placeholder="Capacidad por equipo" min="1"/>
     <input type="number" name="ancho" required placeholder="Ancho en metros" min="1"/>
     <input type="number" name="largo" required placeholder="Largo en metros" min="1"/>
-    <button type="submit">Enviar</button>
+    <button class = "enviar" type="submit">Enviar</button>
   </form>
 </div>
 
@@ -82,4 +82,29 @@ import {goto} from '$app/navigation';
     justify-content:center;
     color: white
   }
+
+    button{
+    border: none;
+		border-radius: 8px;
+		padding: 8px 16px;
+		font-size: 16px;
+		cursor: pointer;
+		font-weight: 500;
+		transition: all 0.2s ease-in-out;
+  }
+
+    .enviar {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .volver {
+		background-color: #007bff;
+		color: white;
+	}
+
+	.volver:hover {
+		background-color: #005ec4;
+		transform: translateY(-1px);
+	}
 </style>

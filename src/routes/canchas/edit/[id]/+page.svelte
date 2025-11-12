@@ -61,7 +61,7 @@ let arrayTipos: any[] =[];
 <NavBar />
 
 <div class="content">
-<button on:click={() => history.back()}>Volver</button>
+<button class ="volver" on:click={() => history.back()}>Volver</button>
 <h1>Editar cancha "{canchaRecibida.numero}"</h1>
   <form on:submit={Enviar} class="editForm">
     <input type="text" name="nombre" required placeholder="Nombre"/>
@@ -100,7 +100,7 @@ let arrayTipos: any[] =[];
     <p>No hay tipos disponibles</p>
     {/if}
     </label>
-      <button type="submit">Enviar</button>
+      <button class = "enviar" type="submit">Enviar</button>
     </label>
   </form>
 </div>
@@ -137,5 +137,28 @@ let arrayTipos: any[] =[];
     display: flex;
     justify-content:center;
     color: white
+  }
+  button{
+    border: none;
+		border-radius: 8px;
+		padding: 8px 16px;
+		font-size: 16px;
+		cursor: pointer;
+		font-weight: 500;
+		transition: all 0.2s ease-in-out;
+  }
+	.volver {
+		background-color: #007bff;
+		color: white;
+	}
+
+	.volver:hover {
+		background-color: #005ec4;
+		transform: translateY(-1px);
+	}
+
+  .enviar {
+    background-color: #28a745;
+    color: white;
   }
 </style>

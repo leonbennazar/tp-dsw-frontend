@@ -27,9 +27,15 @@
     color:white;
   }
   .mapa{
-    display: flex;
-    justify-content: center;
+  display: flex;
+  width: 80%;
+  height: 300px;
+  margin : auto
+  }
+  @media (min-width: 1024px) {
+    .mapa{
     height: 400px;
     width: 800px;
+    }
   }
 </style>

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import {goto} from '$app/navigation';
 	import Navbar from '$lib/components/navbar.svelte';
   let mostrar: any= '';
@@ -77,9 +76,9 @@ async function editartipo(x:number){
               {:else}
                 <h1>Sin techo</h1>
               {/if}
-              <button on:click={() => mostrar = 0}>Cerrar</button>
-              <button on:click={() => editartipo(tipo.id)}>Editar</button>
-              <button class ="delbtn" on:click={() => borrarTipo(tipo.id)}>BORRAR</button>
+              <button class="cerrar"on:click={() => mostrar = 0}>Cerrar</button>
+              <button class= "editar" on:click={() => editartipo(tipo.id)}>Editar</button>
+              <button class ="borrar" on:click={() => borrarTipo(tipo.id)}>BORRAR</button>
             </div>
           </div>
         {/if}
@@ -122,10 +121,7 @@ async function editartipo(x:number){
 	}
 
 
-.delbtn{
-  background-color: rgb(126, 30, 46);
-  color: white;
-}
+
 .tipos{
   display:flex;
   flex-direction: column;
@@ -185,9 +181,13 @@ h1{
 }
 
   button{
-    height:30px;
-    border: none;
-    cursor: pointer;
+		border: none;
+		border-radius: 8px;
+		padding: 8px 16px;
+		font-size: 16px;
+		cursor: pointer;
+		font-weight: 500;
+		transition: all 0.2s ease-in-out;
   }
 
   .popup{
@@ -207,5 +207,33 @@ h1{
     height: 100%;
     background: #111111b4
   }
+	.cerrar {
+		background-color: #007bff;
+		color: white;
+	}
 
+	.cerrar:hover {
+		background-color: #005ec4;
+		transform: translateY(-1px);
+	}
+
+	.editar {
+		background-color: #00bfa6;
+		color: white;
+	}
+
+	.editar:hover {
+		background-color: #009e89;
+		transform: translateY(-1px);
+	}
+
+	.borrar {
+		background-color: #c62828;
+		color: white;
+	}
+
+	.borrar:hover {
+		background-color: #a32020;
+		transform: translateY(-1px);
+	}
 </style>
