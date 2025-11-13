@@ -32,7 +32,7 @@ function desamarcarTurnos(horaturno: string) {
 	}
 
 	async function borrarCancha() {
-		if (!confirm('¿Estás seguro de que quieres borrar esta cancha?')) {
+		if (!confirm('¿Estás seguro de que queres borrar esta cancha?')) {
 			return;
 		}
 		const respuesta = await fetch(`http://localhost:3000/api/canchas/${id}`, { method: 'DELETE' });
@@ -57,6 +57,9 @@ function desamarcarTurnos(horaturno: string) {
 	}
 
 	async function cancelarReserva(turno_id: number, fecha: Date) {
+		if (!confirm('¿Estás seguro de que queres cancelar esta reserva?')) {
+			return;
+		}
 		const reserva = canchaRecibida.reservas.find((r: any) => 
 			r.turno === turno_id && 
 			new Date(r.fecha_reserva).toISOString().slice(0, 10) === new Date(fecha).toISOString().slice(0, 10) &&
@@ -91,8 +94,7 @@ function desamarcarTurnos(horaturno: string) {
 		<div class="listadoTurnos">
 			<label><input type="date" name="fecha" bind:value={fechaSelec} min={fechaHoy} /></label>
         {#each canchaRecibida.turnos as turno}
-			{#if canchaRecibida.reservas?.some((r: { turno: any; fecha_reserva: any;  }) => r.turno === turno.id 
-			&& new Date(r.fecha_reserva).toISOString().slice(0,10) === new Date(fechaSelec).toISOString().slice(0,10) && desamarcarTurnos(turno.hora_ini))}
+			{#if new Date(ahoraFecha).toISOString().slice(0,10) === new Date(fechaSelec).toISOString().slice(0,10) && desamarcarTurnos(turno.hora_ini)}
 			<h1 class= "reservado">
 				{turno.hora_ini}<button class="NoSePuede"
 					>No disponible</button
