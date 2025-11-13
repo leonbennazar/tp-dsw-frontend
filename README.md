@@ -1,4 +1,4 @@
-# Tp anual DSWA - Mi Turno FC - UTN FRRO
+# Tp anual DSW - Mi Turno FC - UTN FRRO
 
 ## Setup
 
