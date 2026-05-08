@@ -1,11 +1,12 @@
 <script lang="ts">
   import {goto} from '$app/navigation';
 	import Navbar from '$lib/components/navbar.svelte';
+	import { PUBLIC_API_LINK } from '$env/static/public';
   let mostrar: any= '';
   let arrayTipos: any[] = [];  //en typescript: data va a ser un array de cualquier tipo
 
   async function getTipos() {
-    const req = await fetch('http://localhost:3000/api/tipos/', {method: "GET"});
+    const req = await fetch(`${PUBLIC_API_LINK}/tipos/`, {method: "GET"});
     const res = await req.json();
     arrayTipos = res.data;  //uso esto porque el array que trae el contenido se llama data
     console.log(arrayTipos); //si la consola devuelve entre {}, es objeto, entre [] es array
@@ -16,7 +17,7 @@ async function borrarTipo(x:number) {
     if (!confirm('¿Estás seguro de que quieres borrar este tipo? Las canchas que lo contengan quedaran sin un tipo asignado.')) {
       return; 
     }
-      const respuesta = await fetch(`http://localhost:3000/api/tipos/${x}`, {method: 'DELETE'});
+      const respuesta = await fetch(`${PUBLIC_API_LINK}/tipos/${x}`, {method: 'DELETE'});
       goto('/tipos')
     if (!respuesta.ok) {
         throw new Error('No se pudo borrar el tipo');

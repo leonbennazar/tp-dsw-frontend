@@ -2,12 +2,13 @@
   import { onMount } from 'svelte';
   import {goto} from '$app/navigation';
 	import Navbar from '$lib/components/navbar.svelte';
+	import { PUBLIC_API_LINK } from '$env/static/public';
   let mostrar: any= '';
   // svelte-ignore non_reactive_update
     let arrayCanchas: any[] = [];  //en typescript: data va a ser un array de cualquier tipo
   let filtro: number = $state(0)
   async function getCanchas() {
-    const req = await fetch('http://localhost:3000/api/canchas/', {method: "GET"});
+    const req = await fetch(`${PUBLIC_API_LINK}/canchas/`, {method: "GET"});
     const res = await req.json();
     arrayCanchas = res.data;  //uso esto porque el array que trae el contenido se llama data
     arrayCanchas.sort((a, b) => a.numero - b.numero)
@@ -18,7 +19,7 @@
 		let arrayTamanios: any[] = $state([]); 
 
 	async function getTamanios() {
-		const req = await fetch('http://localhost:3000/api/tamanios', { method: 'GET' });
+		const req = await fetch(`${PUBLIC_API_LINK}/tamanios`, { method: 'GET' });
 		const res = await req.json();
 		arrayTamanios = res.data;
 		arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo);

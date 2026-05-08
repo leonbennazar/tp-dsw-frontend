@@ -2,6 +2,7 @@
 import NavBar from '$lib/components/navbar.svelte'
 import {goto} from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { PUBLIC_API_LINK } from '$env/static/public';
   // @ts-ignore
   async function Enviar(event) {
     event.preventDefault(); // evita el reload del form
@@ -19,7 +20,7 @@ import {goto} from '$app/navigation';
     const jsonData = JSON.stringify(data);
 
     // Enviar al backend
-    const res = await fetch("http://localhost:3000/api/tipos", {
+    const res = await fetch(`${PUBLIC_API_LINK}/tipos`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

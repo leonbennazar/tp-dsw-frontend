@@ -2,6 +2,8 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import NavBar from '$lib/components/navbar.svelte';
+	import { PUBLIC_API_LINK } from '$env/static/public';
+	
 	$: id = $page.params.id;
 	let canchaRecibida: any = '';
 
@@ -25,7 +27,7 @@ function desamarcarTurnos(horaturno: string) {
 		
 	}
 	async function getCancha() {
-		const req = await fetch(`http://localhost:3000/api/canchas/${id}`, { method: 'GET' });
+		const req = await fetch(`${PUBLIC_API_LINK}/canchas/${id}`, { method: 'GET' });
 		const res = await req.json();
 		canchaRecibida = res.data;
 		console.log(canchaRecibida);
@@ -35,7 +37,7 @@ function desamarcarTurnos(horaturno: string) {
 		if (!confirm('¿Estás seguro de que queres borrar esta cancha?')) {
 			return;
 		}
-		const respuesta = await fetch(`http://localhost:3000/api/canchas/${id}`, { method: 'DELETE' });
+		const respuesta = await fetch(`${PUBLIC_API_LINK}/canchas/${id}`, { method: 'DELETE' });
 		goto('/canchas');
 		if (!respuesta.ok) {
 			throw new Error('No se pudo borrar la cancha');
@@ -43,7 +45,7 @@ function desamarcarTurnos(horaturno: string) {
 	}
 
 	async function reservar(turno_id: number) {
-		await fetch('http://localhost:3000/api/reservas', {
+		await fetch(`${PUBLIC_API_LINK}/reservas`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
@@ -66,7 +68,7 @@ function desamarcarTurnos(horaturno: string) {
 			r.estado_reserva === 'pendiente'
 		);
 
-		await fetch(`http://localhost:3000/api/reservas/${reserva.id}`, {
+		await fetch(`${PUBLIC_API_LINK}/reservas/${reserva.id}`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({

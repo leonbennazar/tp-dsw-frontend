@@ -3,6 +3,7 @@ import NavBar from '$lib/components/navbar.svelte'
 import {goto} from '$app/navigation';
 import { page } from '$app/stores';
 import { onMount } from 'svelte';
+import { PUBLIC_API_LINK } from '$env/static/public';
 let arrayTamanios: any[] =[];
 let arrayTipos: any[] =[];
  $: id = $page.params.id;
@@ -10,7 +11,7 @@ let arrayTipos: any[] =[];
 
 
   async function getCancha() {
-    const req = await fetch(`http://localhost:3000/api/canchas/${id}`, {method: "GET"});
+    const req = await fetch(`${PUBLIC_API_LINK}/canchas/${id}`, {method: "GET"});
     const res = await req.json();
     canchaRecibida = res.data
     console.log(canchaRecibida)
@@ -28,7 +29,7 @@ let arrayTipos: any[] =[];
 
     const jsonData = JSON.stringify(data);
   
-    const res = await fetch(`http://localhost:3000/api/canchas/${id}`, {
+    const res = await fetch(`${PUBLIC_API_LINK}/canchas/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +40,7 @@ let arrayTipos: any[] =[];
   }
 
   async function getTamanios() {
-    const req = await fetch('http://localhost:3000/api/tamanios', {method: "GET"});
+    const req = await fetch(`${PUBLIC_API_LINK}/tamanios`, {method: "GET"});
     const res = await req.json();
     arrayTamanios = res.data;  //uso esto porque el array que trae el contenido se llama data
     arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo)
@@ -47,7 +48,7 @@ let arrayTipos: any[] =[];
   }
 
   async function getTipos() {
-    const req = await fetch('http://localhost:3000/api/tipos/', {method: "GET"});
+    const req = await fetch(`${PUBLIC_API_LINK}/tipos/`, {method: "GET"});
     const res = await req.json();
     arrayTipos = res.data;  //Si el array que devuelve los resultados tiene un nombre, se lo agrego como res.nombre
     console.log(arrayTipos); //si la consola devuelve entre {}, es objeto, entre [] es array

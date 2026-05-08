@@ -2,11 +2,12 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Navbar from '$lib/components/navbar.svelte';
+	import { PUBLIC_API_LINK } from '$env/static/public';
 	let mostrar: any = '';
 	let arrayTamanios: any[] = []; //en typescript: data va a ser un array de cualquier tipo
 
 	async function getTamanios() {
-		const req = await fetch('http://localhost:3000/api/tamanios', { method: 'GET' });
+		const req = await fetch(`${PUBLIC_API_LINK}/tamanios`, { method: 'GET' });
 		const res = await req.json();
 		arrayTamanios = res.data;
 		arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo);
@@ -20,7 +21,7 @@
 		) {
 			return;
 		}
-		const respuesta = await fetch(`http://localhost:3000/api/tamanios/${x}`, { method: 'DELETE' });
+		const respuesta = await fetch(`${PUBLIC_API_LINK}/tamanios/${x}`, { method: 'DELETE' });
 		goto('/tamanios');
 		if (!respuesta.ok) {
 			throw new Error('No se pudo borrar el tamanio');

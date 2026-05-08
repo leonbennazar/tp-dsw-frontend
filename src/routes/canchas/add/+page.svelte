@@ -2,6 +2,7 @@
 	import NavBar from '$lib/components/navbar.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { PUBLIC_API_LINK } from '$env/static/public';
 	let arrayTamanios: any[] = [];
 	let arrayTipos: any[] = [];
 	// @ts-ignore
@@ -18,7 +19,7 @@
 		// convierte a json
 		const jsonData = JSON.stringify(data);
 
-		const res = await fetch('http://localhost:3000/api/canchas', {
+		const res = await fetch(`${PUBLIC_API_LINK}/canchas`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -36,7 +37,7 @@
 	}
 
 	async function getTamanios() {
-		const req = await fetch('http://localhost:3000/api/tamanios/', { method: 'GET' });
+		const req = await fetch(`${PUBLIC_API_LINK}/tamanios/`, { method: 'GET' });
 		const res = await req.json();
 		arrayTamanios = res.data; //Si el array que devuelve los resultados tiene un nombre, se lo agrego como res.nombre
 		arrayTamanios.sort((a, b) => a.capacidad_x_equipo - b.capacidad_x_equipo);
@@ -44,7 +45,7 @@
 	}
 
 	async function getTipos() {
-		const req = await fetch('http://localhost:3000/api/tipos/', { method: 'GET' });
+		const req = await fetch(`${PUBLIC_API_LINK}/tipos/`, { method: 'GET' });
 		const res = await req.json();
 		arrayTipos = res.data; //Si el array que devuelve los resultados tiene un nombre, se lo agrego como res.nombre
 		console.log(arrayTipos); //si la consola devuelve entre {}, es objeto, entre [] es array

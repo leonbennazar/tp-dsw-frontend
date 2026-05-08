@@ -3,12 +3,13 @@ import NavBar from '$lib/components/navbar.svelte'
 import {goto} from '$app/navigation';
 import { page } from '$app/stores';
 import { onMount } from 'svelte';
+import { PUBLIC_API_LINK } from '$env/static/public';
  $: id = $page.params.id;
   let tipoRecibido :any = '';
 
 
   async function getTipo() {
-    const req = await fetch(`http://localhost:3000/api/tipos/${id}`, {method: "GET"});
+    const req = await fetch(`${PUBLIC_API_LINK}/tipos/${id}`, {method: "GET"});
     const res = await req.json();
     tipoRecibido = res.data
     console.log(tipoRecibido)
@@ -24,7 +25,7 @@ import { onMount } from 'svelte';
 
     const jsonData = JSON.stringify(data);
   
-    const res = await fetch(`http://localhost:3000/api/tipos/${id}`, {
+    const res = await fetch(`${PUBLIC_API_LINK}/tipos/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

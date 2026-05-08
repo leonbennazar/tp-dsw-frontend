@@ -3,12 +3,13 @@ import NavBar from '$lib/components/navbar.svelte'
 import {goto} from '$app/navigation';
 import { page } from '$app/stores';
 import { onMount } from 'svelte';
+import { PUBLIC_API_LINK } from '$env/static/public';
  $: id = $page.params.id;
   let tamanioRecibido :any = '';
 
 
   async function getTamanio() {
-    const req = await fetch(`http://localhost:3000/api/tamanios/${id}`, {method: "GET"});
+    const req = await fetch(`${PUBLIC_API_LINK}/tamanios/${id}`, {method: "GET"});
     const res = await req.json();
     tamanioRecibido = res.data
     console.log(tamanioRecibido)
@@ -24,7 +25,7 @@ import { onMount } from 'svelte';
 
     const jsonData = JSON.stringify(data);
   
-    const res = await fetch(`http://localhost:3000/api/tamanios/${id}`, {
+    const res = await fetch(`${PUBLIC_API_LINK}/tamanios/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
