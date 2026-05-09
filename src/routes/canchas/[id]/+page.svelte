@@ -3,10 +3,12 @@
 	import { page } from '$app/stores';
 	import NavBar from '$lib/components/navbar.svelte';
 	import { PUBLIC_API_LINK } from '$env/static/public';
-	
+	import type { Cancha } from '$lib/types'
 	$: id = $page.params.id;
-	let canchaRecibida: any = '';
 
+
+
+	let canchaRecibida: Cancha;
 	let fechaSelec = new Date();
 	const ahoraFecha = new Date();
 	let fechaHoy = ahoraFecha.toISOString().slice(0,10);

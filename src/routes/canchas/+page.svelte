@@ -3,9 +3,13 @@
   import {goto} from '$app/navigation';
 	import Navbar from '$lib/components/navbar.svelte';
 	import { PUBLIC_API_LINK } from '$env/static/public';
-  let mostrar: any= '';
+  import { resolve } from '$app/paths';
+  import type { Cancha, Tamanio } from '$lib/types'
+
+
+
   // svelte-ignore non_reactive_update
-    let arrayCanchas: any[] = [];  //en typescript: data va a ser un array de cualquier tipo
+  let arrayCanchas: Cancha[] = [];  
   let filtro: number = $state(0)
   async function getCanchas() {
     const req = await fetch(`${PUBLIC_API_LINK}/canchas/`, {method: "GET"});
@@ -15,8 +19,7 @@
     console.log(arrayCanchas); //si la consola devuelve entre {}, es objeto, entre [] es array
   }
 
-	// svelte-ignore non_reactive_update
-		let arrayTamanios: any[] = $state([]); 
+		let arrayTamanios: Tamanio[] = $state([]); 
 
 	async function getTamanios() {
 		const req = await fetch(`${PUBLIC_API_LINK}/tamanios`, { method: 'GET' });
@@ -37,14 +40,14 @@ onMount(getTamanios)
 <div class ="content">
 
   <div class ="addbtn">
-    <button onclick ={(()=> goto('/canchas/add'))}>+</button>
+    <button onclick ={(()=> goto(resolve('/canchas/add')))}>+</button>
   </div>
 
 
       {#await getCanchas()}
         <h1>Cargando canchas...</h1>
 
-        {:then canchas}
+        {:then}
         {#if arrayCanchas.length === 0}
           <h1>No hay canchas cargadas</h1>
         {:else}
@@ -53,7 +56,7 @@ onMount(getTamanios)
           onclick={() => filtro = 0}
           class:active={filtro === 0}>
           Sin filtro</button>
-          {#each arrayTamanios as tamanio}
+          {#each arrayTamanios as tamanio (tamanio.id)}
             <button 
               onclick={() => filtro = Number(tamanio.id)} 
               class:active={filtro === Number(tamanio.id)}>
@@ -63,9 +66,9 @@ onMount(getTamanios)
 
         </div>
           <div class="canchas">
-            {#each arrayCanchas as cancha}
+            {#each arrayCanchas as cancha (cancha.id)}
             {#if filtro === 0 || cancha.tamanio?.id === filtro }
-            <button class="accioncancha" onclick={() => goto(`/canchas/${cancha.id}`)}>
+            <button class="accioncancha" onclick={() => goto(resolve(`/canchas/${cancha.id}`))}>
               <div class ="cancha-card">
                   <h1>Cancha {cancha.numero}</h1>
               </div>
@@ -74,7 +77,7 @@ onMount(getTamanios)
             {/each}
           </div>
         {/if}
-      {:catch err}
+      {:catch}
       <p style="color:red">Ocurrió un error con la base de datos</p>
       {/await}
 
