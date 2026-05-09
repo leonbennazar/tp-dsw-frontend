@@ -4,10 +4,15 @@ import {goto} from '$app/navigation';
 import { page } from '$app/stores';
 import { onMount } from 'svelte';
 import { PUBLIC_API_LINK } from '$env/static/public';
-let arrayTamanios: any[] =[];
-let arrayTipos: any[] =[];
+import type {Tamanio, Tipo, Cancha} from '$lib/types.ts'
+import { resolve } from '$app/paths';
+
+
+
+let arrayTamanios: Tamanio[] =[];
+let arrayTipos: Tipo[] =[];
  $: id = $page.params.id;
-  let canchaRecibida :any = '';
+  let canchaRecibida :Cancha;
 
 
   async function getCancha() {
@@ -16,7 +21,7 @@ let arrayTipos: any[] =[];
     canchaRecibida = res.data
     console.log(canchaRecibida)
   }
-  // @ts-ignore
+  // @ts-expect-error daf
   async function Enviar(event) {
     event.preventDefault(); 
 
@@ -36,7 +41,7 @@ let arrayTipos: any[] =[];
       },
       body: jsonData,
     });
-    goto('/canchas')
+    goto(resolve('/canchas'))
   }
 
   async function getTamanios() {
@@ -78,7 +83,7 @@ let arrayTipos: any[] =[];
 
     {#if arrayTamanios.length !=0}
     <label>Tamaño<br>
-      {#each arrayTamanios as tamanio }
+      {#each arrayTamanios as tamanio (tamanio.id)}
       <label>
         <input type="radio" name="tamanio" value="{tamanio.id}" />
       F{tamanio.capacidad_x_equipo}</label><br>
@@ -91,7 +96,7 @@ let arrayTipos: any[] =[];
 
     {#if arrayTipos.length !=0}
     <label>Tipo<br>
-    {#each arrayTipos as tipo }
+    {#each arrayTipos as tipo (tipo.id) }
     <label>
       <input type="radio" name="tipo" value="{tipo.id}" />
     {tipo.nombre}</label><br>

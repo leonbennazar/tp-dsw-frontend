@@ -3,7 +3,8 @@
 	import { page } from '$app/stores';
 	import NavBar from '$lib/components/navbar.svelte';
 	import { PUBLIC_API_LINK } from '$env/static/public';
-	import type { Cancha } from '$lib/types'
+  import { resolve } from '$app/paths';
+	import type { Cancha, Reserva, Turno } from '$lib/types'
 	$: id = $page.params.id;
 
 
@@ -40,7 +41,7 @@ function desamarcarTurnos(horaturno: string) {
 			return;
 		}
 		const respuesta = await fetch(`${PUBLIC_API_LINK}/canchas/${id}`, { method: 'DELETE' });
-		goto('/canchas');
+		goto(resolve('/canchas'));
 		if (!respuesta.ok) {
 			throw new Error('No se pudo borrar la cancha');
 		}
@@ -64,11 +65,15 @@ function desamarcarTurnos(horaturno: string) {
 		if (!confirm('¿Estás seguro de que queres cancelar esta reserva?')) {
 			return;
 		}
-		const reserva = canchaRecibida.reservas.find((r: any) => 
+		const reserva = canchaRecibida.reservas.find((r: Reserva) => 
 			r.turno === turno_id && 
 			new Date(r.fecha_reserva).toISOString().slice(0, 10) === new Date(fecha).toISOString().slice(0, 10) &&
 			r.estado_reserva === 'pendiente'
 		);
+
+		if (!reserva) {
+			return;
+		}
 
 		await fetch(`${PUBLIC_API_LINK}/reservas/${reserva.id}`, {
 			method: 'PUT',
@@ -88,23 +93,23 @@ function desamarcarTurnos(horaturno: string) {
 <div class="content">
 	{#await getCancha()}
 		<h1>Cargando cancha...</h1>
-	{:then cancha}
+	{:then}
 		<div class="acciones">
 			<button class="btn volver" on:click={() => history.back()}>Volver</button>
-			<button class="btn editar" on:click={() => goto(`/canchas/edit/${id}`)}>Editar</button>
+			<button class="btn editar" on:click={() => goto(resolve(`/canchas/edit/${id}`))}>Editar</button>
 			<button class="btn borrar" on:click={() => borrarCancha()}>Borrar</button>
 		</div>
 
 		<div class="listadoTurnos">
 			<label><input type="date" name="fecha" bind:value={fechaSelec} min={fechaHoy} /></label>
-        {#each canchaRecibida.turnos as turno}
+        {#each canchaRecibida.turnos as turno (turno.id)}
 			{#if new Date(ahoraFecha).toISOString().slice(0,10) === new Date(fechaSelec).toISOString().slice(0,10) && desamarcarTurnos(turno.hora_ini)}
 			<h1 class= "reservado">
 				{turno.hora_ini}<button class="NoSePuede"
 					>No disponible</button
 				>
 			</h1>
-			{:else if !canchaRecibida.reservas?.some((r: { turno: any; fecha_reserva: any; estado_reserva: any }) => r.turno === turno.id 
+			{:else if !canchaRecibida.reservas?.some((r: { turno: Turno; fecha_reserva: Date; estado_reserva: string }) => r.turno === turno.id 
 			&& new Date(r.fecha_reserva).toISOString().slice(0,10) === new Date(fechaSelec).toISOString().slice(0,10)
 			&& r.estado_reserva === 'pendiente')}
 			<h1>
@@ -140,7 +145,7 @@ function desamarcarTurnos(horaturno: string) {
 		</div>
 
 
-	{:catch err}
+	{:catch}
 		<p style="color:red">Hubo un problema con la base de datos</p>
 	{/await}
 </div>

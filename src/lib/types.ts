@@ -5,8 +5,8 @@ export interface Cancha {
 	tipo_turno: 'en_punto' | 'y_media';
 	tamanio: Tamanio;
 	tipo: Tipo;
-	turnos: Turno;
-	reservas: Reserva;
+	turnos: Turno[];
+	reservas: Reserva[];
 }
 
 export interface Reserva {
@@ -22,7 +22,7 @@ export interface Tamanio {
 	capacidad_x_equipo: number;
 	ancho: number;
 	largo: number;
-	canchas: Cancha;
+	canchas: Cancha[];
 }
 
 export interface Tipo {
@@ -30,13 +30,13 @@ export interface Tipo {
 	nombre: string;
 	piso: string;
 	techo: 'con_techo' | 'sin_techo';
-	canchas: Cancha;
+	canchas: Cancha[];
 }
 
 export interface Turno {
 	id: number;
 	hora_ini: string;
 	hora_fin: string;
-	canchas: Cancha;
-	reservas: Reserva;
+	canchas: Cancha[];
+	reservas: Reserva[];
 }
